@@ -1,23 +1,30 @@
 class Calculator {
-  previousOperandTextElement: HTMLElement;
+  previousOperandTextElement: HTMLElement
   currentOperandTextElement: HTMLElement
+  allClearButtonElement: HTMLElement
   currentOperand: string
   previousOperand: string
   operation: string
   specialOperation: string
 
-  constructor(previousOperandTextElement: HTMLElement, currentOperandTextElement: HTMLElement) {
+  constructor(previousOperandTextElement: HTMLElement, currentOperandTextElement: HTMLElement, allClearButtonElement: HTMLElement) {
     this.previousOperandTextElement = previousOperandTextElement
     this.currentOperandTextElement = currentOperandTextElement
+    this.allClearButtonElement = allClearButtonElement
+
     this.clear()
     this.loadOperand();
     this.updateDisplay();
   }
 
   clear() {
-    this.currentOperand = ''
-    this.previousOperand = ''
-    this.operation = undefined
+    if(this.currentOperand !== '') {
+      this.currentOperand = ''
+    } else {
+      this.currentOperand = ''
+      this.previousOperand = ''
+      this.operation = undefined
+    }
   }
 
   delete() {
@@ -37,13 +44,20 @@ class Calculator {
   }
 
   chooseOperation(pOperation: string, pSpecial: boolean) {
-    if (this.currentOperand === '') return
-
     if (pSpecial) {
       this.specialOperation = pOperation;
       return
     }
 
+    if (this.currentOperand === '') {
+      if(this.previousOperand !== '') {
+        this.operation = pOperation;
+        this.updateDisplay();
+      }
+      return
+    }
+
+    
     if (this.previousOperand !== '') {
       this.compute()
     }
@@ -183,8 +197,14 @@ class Calculator {
     } else {
       this.previousOperandTextElement.innerText = ''
     }
+    if(this.currentOperand !== '') {
+      this.allClearButtonElement.innerText = "C"
+    } else {
+      this.allClearButtonElement.innerText = "AC"
+    }
     this.saveOperand()
   }
+
   private saveOperand() {
     sessionStorage.setItem("currentOperand", this.currentOperand);
     sessionStorage.setItem("previousOperand", this.previousOperand);
@@ -217,7 +237,7 @@ const allClearButton = <HTMLElement>document.querySelector('[data-all-clear]')
 const previousOperandTextElement = <HTMLElement>document.querySelector('[data-previous]')
 const currentOperandTextElement = <HTMLElement>document.querySelector('[data-current]')
 
-const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
+const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement, allClearButton)
 
 numberButtons.forEach(button => {
   button.addEventListener('click', () => {

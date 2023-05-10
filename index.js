@@ -1,21 +1,28 @@
 class Calculator {
     previousOperandTextElement;
     currentOperandTextElement;
+    allClearButtonElement;
     currentOperand;
     previousOperand;
     operation;
     specialOperation;
-    constructor(previousOperandTextElement, currentOperandTextElement) {
+    constructor(previousOperandTextElement, currentOperandTextElement, allClearButtonElement) {
         this.previousOperandTextElement = previousOperandTextElement;
         this.currentOperandTextElement = currentOperandTextElement;
+        this.allClearButtonElement = allClearButtonElement;
         this.clear();
         this.loadOperand();
         this.updateDisplay();
     }
     clear() {
-        this.currentOperand = '';
-        this.previousOperand = '';
-        this.operation = undefined;
+        if (this.currentOperand !== '') {
+            this.currentOperand = '';
+        }
+        else {
+            this.currentOperand = '';
+            this.previousOperand = '';
+            this.operation = undefined;
+        }
     }
     delete() {
         this.currentOperand = this.currentOperand.toString().slice(0, -1);
@@ -34,10 +41,15 @@ class Calculator {
         this.currentOperand = pNumber.toString();
     }
     chooseOperation(pOperation, pSpecial) {
-        if (this.currentOperand === '')
-            return;
         if (pSpecial) {
             this.specialOperation = pOperation;
+            return;
+        }
+        if (this.currentOperand === '') {
+            if (this.previousOperand !== '') {
+                this.operation = pOperation;
+                this.updateDisplay();
+            }
             return;
         }
         if (this.previousOperand !== '') {
@@ -175,6 +187,12 @@ class Calculator {
         else {
             this.previousOperandTextElement.innerText = '';
         }
+        if (this.currentOperand !== '') {
+            this.allClearButtonElement.innerText = "C";
+        }
+        else {
+            this.allClearButtonElement.innerText = "AC";
+        }
         this.saveOperand();
     }
     saveOperand() {
@@ -204,7 +222,7 @@ const deleteButton = document.querySelector('[data-delete]');
 const allClearButton = document.querySelector('[data-all-clear]');
 const previousOperandTextElement = document.querySelector('[data-previous]');
 const currentOperandTextElement = document.querySelector('[data-current]');
-const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement);
+const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement, allClearButton);
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
         calculator.appendNumber(button.innerText);
