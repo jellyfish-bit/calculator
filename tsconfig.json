@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "target": "esnext",
+    "watch": true
+  }
+}
