@@ -6,6 +6,7 @@
   --outputColor: rgba(4, 18, 1, 0.622);
   --primaryColor:rgb(156, 235, 255);
   --specialButton: rgb(108, 108, 108);
+  --fontSizeDisplay: min(2rem, calc(5dvh));
 }
 
 body {
@@ -19,7 +20,8 @@ body {
 
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  overflow: hidden;
 }
 
 .calculator-grid {
@@ -27,21 +29,24 @@ body {
   display: grid;
   justify-content: flex-end;
   align-content: center;
-  width: calc(50% - 25px);
-  padding-right: 25px;
-  height: 100vh;
+  width: 50%;
+  width: 50dvw;
+  padding-right: min(25px, calc(50dvw - 400px));
+  height: 100%;
+  height: 100dvh;
   grid-template-columns: repeat(4, minmax(auto, 100px));
-  grid-template-rows: minmax(120px, auto) repeat(5, minmax(auto, 100px));
+  grid-template-rows: minmax(min(120px, 20dvh), auto) repeat(5, minmax(auto, 100px));
 }
 .calculator-grid > button {
   color: black;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: var(--fontSizeDisplay);
   outline: none;
   border: 1px solid whitesmoke;
   background-color: var(--primaryColor);
   opacity: 0.75;
   transition: 0.15s;
+  text-align: center;
 }
 .calculator-grid > button:hover {
   opacity: 1;
@@ -73,11 +78,11 @@ body {
 .output > .previous-operand {
   color: var(--white);
   opacity: 0.75;
-  font-size: 1.5rem;
+  font-size: calc(var(--fontSizeDisplay) * 0.75);
 }
 .output > .current-operand {
   color: var(--white);
-  font-size: 2.5rem;
+  font-size: calc(var(--fontSizeDisplay) * 1.25);
 }
 @media (orientation: portrait) {
   .button-grid {
@@ -87,6 +92,7 @@ body {
   .calculator-grid {
     justify-content: center;
     width: 100%;
+    width: 100dvh;
     padding: 0;
   }
 
@@ -97,20 +103,24 @@ body {
   display: grid;
   justify-content: flex-start;
   align-content: center;
-  width: calc(50% - 25px);
-  padding-left: 25px;
-  height: 100vh;
+  width: 50%;
+  width: 50dvw;
+  height: 100%;
+  height: 100dvh;
+  padding-left: min(25px, calc(50dvw - 400px));
   grid-template-columns: repeat(4, minmax(auto, 100px));
   grid-auto-rows: minmax(auto, 100px);
 }
 .button-grid > button {
+  color: black;
   cursor: pointer;
-  font-size: 2rem;
+  font-size: var(--fontSizeDisplay);
   outline: none;
   border: 1px solid whitesmoke;
   background-color: var(--specialButton);
   opacity: 0.75;
   transition: 0.15s;
+  text-align: center;
 }
 .button-grid > button:hover {
   opacity: 1;
